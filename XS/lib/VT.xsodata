@@ -1,0 +1,6 @@
+service {
+	"MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H" as "HEAD" navigates ("Schedule" as "Schedule");
+	"MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I" as "ITEM" navigates ("Schedule" as "Schedule_Detail");
+     association "Schedule" principal "HEAD"("ID") multiplicity "1" dependent "ITEM"("ID") multiplicity "*";
+
+}                             

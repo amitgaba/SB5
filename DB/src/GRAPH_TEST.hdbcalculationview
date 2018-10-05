@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="MT_VIRTUAL_TABLES.DB::GRAPH_TEST" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="GRAPH_TEST"/>
+<localVariables>
+  <variable id="IP_1" parameter="true">
+    <descriptions defaultDescription=""/>
+    <variableProperties datatype="VARCHAR" length="10" mandatory="false">
+      <valueDomain type="empty"/>
+      <selection multiLine="true" type="Single"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:GraphView" id="Graph_1" workspace="MT_VIRTUAL_TABLES.DB::greek" action="GET_SHORTEST_PATH_ONE_TO_ONE">
+    <viewAttributes>
+      <viewAttribute datatype="DECIMAL" length="18" id="ORDERING"/>
+      <viewAttribute datatype="INTEGER" id="WEIGHT"/>
+      <viewAttribute datatype="INTEGER" length="10" id="key"/>
+      <viewAttribute datatype="NVARCHAR" length="100" id="source"/>
+      <viewAttribute datatype="NVARCHAR" length="100" id="target"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <getShortestPathParameterization>
+      <startVertex></startVertex>
+      <inputWeightColumn></inputWeightColumn>
+      <direction>outgoing</direction>
+      <targetVertex></targetVertex>
+    </getShortestPathParameterization>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Graph_1">
+  <attributes>
+    <attribute id="ORDERING" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ORDERING"/>
+      <keyMapping columnObjectName="Graph_1" columnName="ORDERING"/>
+    </attribute>
+    <attribute id="WEIGHT" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="WEIGHT"/>
+      <keyMapping columnObjectName="Graph_1" columnName="WEIGHT"/>
+    </attribute>
+    <attribute id="key" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="key"/>
+      <keyMapping columnObjectName="Graph_1" columnName="key"/>
+    </attribute>
+    <attribute id="source" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="source"/>
+      <keyMapping columnObjectName="Graph_1" columnName="source"/>
+    </attribute>
+    <attribute id="target" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="target"/>
+      <keyMapping columnObjectName="Graph_1" columnName="target"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures>
+    <measure id="COUNT_1" order="6" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" aggregatable="true" datatype="INTEGER">
+      <exceptionAggregation>
+        <attribute attributeName="source"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      </measure>
+  </calculatedMeasures>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Graph_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="-198" y="190"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

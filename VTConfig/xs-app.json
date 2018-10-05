@@ -1,0 +1,13 @@
+{
+  "welcomeFile": "index.html",
+  "authenticationMethod": "none",
+ "routes": [{
+  		"source": "(.*)(.xsjs)",
+		"destination": "XS_be",
+		"authenticationType": "none"
+		}, {
+		"source": "(.*)(.xsodata)",
+		"destination": "XS_be",
+		"authenticationType": "none"
+  }]        
+}

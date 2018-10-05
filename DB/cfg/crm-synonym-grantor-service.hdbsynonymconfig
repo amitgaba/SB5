@@ -1,0 +1,32 @@
+{
+        "MT_VIRTUAL_TABLES.DB::BUT000_CRM": {
+        "target": {
+            "schema.configure": "crm-synonym-grantor-service/schema",
+            "object": "BUT000"
+        }
+    },
+    "MT_VIRTUAL_TABLES.DB::SWOR_CRM": {
+        "target": {
+            "schema.configure": "crm-synonym-grantor-service/schema",
+            "object": "SWOR"
+        }
+    },
+    "MT_VIRTUAL_TABLES.DB::AUSP_CRM": {
+        "target": {
+            "schema.configure": "crm-synonym-grantor-service/schema",
+            "object": "AUSP"
+        }
+    },
+    "MT_VIRTUAL_TABLES.DB::KSML_CRM": {
+        "target": {
+            "schema.configure": "crm-synonym-grantor-service/schema",
+            "object": "KSML"
+        }
+    },    
+    "MT_VIRTUAL_TABLES.DB::CABNT_CRM": {
+        "target": {
+            "schema.configure": "crm-synonym-grantor-service/schema",
+            "object": "CABNT"
+        }
+    }    
+}

@@ -1,0 +1,40 @@
+namespace MT_VIRTUAL_TABLES.DB;
+
+context DataModel {
+
+    entity VIRTUAL_H {
+        key ID             : Integer not null;
+            VIEW_NAME      : String(255);
+            SCHEMA_NAME    : String(255);
+            FUNCTION	   : String(50);
+            VIRTUAL_NAME   : String(255);
+    };
+
+    entity VIRTUAL_I {
+    	key ID	 : Integer not null;
+    	key ITEM : Integer not null;
+    		CRON : String(50);
+    	    SCHID: String(10);
+    		FILTER		   : String(500);
+            OUTCOLS		   : String(255);    	
+            PLHOLD		   : String(1000);    
+    };
+ 
+   entity EXTRACT_ERROR {
+    	key ID			   : Integer not null;
+    	key ITEM		   : Integer not null;
+    	key head_item	   : Integer;
+    	key time		   : UTCTimestamp not null; 
+    		error_code	   : Integer;
+    		error_messsage : String(255);
+	};    
+	
+     entity EXEC_TIME_COMPARE {
+    	key ID	 : Integer not null;
+    	key ITEM : Integer not null;
+    	key exec_time: UTCTimestamp not null;
+    		TOTAL_TIME_IN_SECS: Integer;
+    		RECORD_COUNT: Integer;
+    		FREE_TXT: String(3000);
+    };
+};

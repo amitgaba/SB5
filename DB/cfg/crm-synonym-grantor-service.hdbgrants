@@ -1,0 +1,76 @@
+{
+    "crm-synonym-grantor-service": {
+        "object_owner": {
+            "object_privileges": [
+                {
+                    "name": "BUT000",
+                    
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                },
+                {
+                    "name": "SWOR",
+                    "privileges": [
+                        "SELECT"
+                    ]
+                },
+                {
+                    "name": "AUSP",
+                    
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                },
+                {
+                    "name": "KSML",
+                    
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                },
+                {
+                    "name": "CABNT",
+                    
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                }
+            ]
+        },
+        "application_user": {
+            "object_privileges": [
+                                {
+                    "name": "BUT000",
+                    "privileges": [
+                        "SELECT"
+                    ]
+                },
+                {
+                    "name": "SWOR",
+                    "privileges": [
+                        "SELECT"
+                    ]
+                },
+                {
+                    "name": "AUSP",
+                    "privileges": [
+                        "SELECT"
+                    ]
+                },
+                {
+                    "name": "KSML",
+                    "privileges": [
+                        "SELECT"
+                    ]
+                },                
+                {
+                    "name": "CABNT",
+                    "privileges": [
+                        "SELECT"
+                    ]
+                }
+            ]
+        }
+    }
+}

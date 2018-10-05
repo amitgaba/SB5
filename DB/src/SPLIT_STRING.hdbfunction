@@ -1,0 +1,42 @@
+FUNCTION "MT_VIRTUAL_TABLES.DB::SPLIT_STRING" ( MATNR_STRING VARCHAR(2000) ) 
+	RETURNS TABLE
+	(
+	 "MATNR" VARCHAR(18)
+	)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+
+  declare _items nvarchar(100) ARRAY;
+
+  declare _text nvarchar(100);
+
+  declare _index integer;
+
+  _text := :MATNR_STRING ; --Insert here value passed from multiple parameter 
+
+  _index := 1;
+
+
+  WHILE LOCATE(:_text,',') > 0 DO
+
+  _items[:_index] := SUBSTR_BEFORE(:_text,',');
+
+  _text := SUBSTR_AFTER(:_text,',');
+
+  _index := :_index + 1;
+
+  END WHILE;
+
+  _items[:_index] := :_text;
+
+
+  rst = UNNEST(:_items) AS ("items"); 
+
+  RETURN
+	
+  SELECT REPLACE("items",'''','') as  "MATNR" FROM :rst;
+
+END;
+
+

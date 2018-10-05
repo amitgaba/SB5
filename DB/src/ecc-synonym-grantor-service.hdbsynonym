@@ -1,0 +1,11 @@
+{
+    "MT_VIRTUAL_TABLES.DB::TABLE_COLUMNS": {},
+    "MT_VIRTUAL_TABLES.DB::M_TIME_DIMENSION": {},
+	"MT_VIRTUAL_TABLES.DB::VIEW_COLUMNS": {},
+	"MT_VIRTUAL_TABLES.DB::Dummy": {
+    "target": {
+      "object": "DUMMY",
+      "schema": "SYS"
+    }
+  }	
+}

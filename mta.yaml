@@ -1,0 +1,51 @@
+ID: MT_VIRTUAL_TABLES
+_schema-version: '2.0'
+version: 0.0.1
+modules:
+  - name: DB
+    type: hdb
+    path: DB
+    requires:
+      - name: hdi_DB
+        properties:
+          TARGET_CONTAINER: '~{hdi-container-name}'      
+      - name: ecc-synonym-grantor-service
+      - name: crm-synonym-grantor-service      
+  - name: XS
+    type: nodejs
+    path: XS
+    provides:
+      - name: XS_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: hdi_DB
+        properties:
+          name: hdi-container
+
+  - name: VTConfig
+    type: html5
+    path: VTConfig
+    requires:
+     - name: XS_api
+       group: destinations
+       properties:
+          name: XS_be
+          url: ~{url}
+
+resources:
+  - name: hdi_DB
+    parameters:
+      config:
+        schema: MT_VIRTUAL_TABLE
+    properties:
+      hdi-container-name: '${service-name}'
+    type: com.sap.xs.hdi-container
+  - name: ecc-synonym-grantor-service
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: ecc-synonym-grantor-service
+  - name: crm-synonym-grantor-service
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: crm-synonym-grantor-service

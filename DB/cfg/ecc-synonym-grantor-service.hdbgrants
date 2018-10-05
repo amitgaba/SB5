@@ -1,0 +1,54 @@
+{
+    "ecc-synonym-grantor-service": {
+        "object_owner": {
+            "object_privileges": [
+                {
+                    "name": "TABLE_COLUMNS",
+                    "schema": "SYS",
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                },  
+                {
+                    "name": "VIEW_COLUMNS",
+                    "schema": "SYS",
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                },      
+                {
+                    "name": "M_TIME_DIMENSION",
+                    "schema": "_SYS_BI",
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                }                    
+            ]
+        },
+        "application_user": {
+            "object_privileges": [
+                {
+                    "name": "TABLE_COLUMNS",
+                    "privileges": [
+                        "SELECT"
+                    ],
+                    "schema": "SYS"                    
+                },       
+                {
+                    "name": "VIEW_COLUMNS",
+                    "privileges": [
+                        "SELECT"
+                    ],
+                    "schema": "SYS"                    
+                },
+                {
+                    "name": "M_TIME_DIMENSION",
+                    "privileges": [
+                        "SELECT"
+                    ],
+                    "schema": "_SYS_BI"                    
+                }
+            ]
+        }
+    }
+}

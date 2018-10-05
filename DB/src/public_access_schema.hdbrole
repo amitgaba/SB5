@@ -1,0 +1,16 @@
+{
+    "role": {
+        "name": "MT_VIRTUAL_TABLES.DB::PublicAccessSchema",
+        "schema_privileges": [
+            {
+                "privileges": [
+                    "SELECT",
+                    "EXECUTE",
+                    "CREATE ANY",
+                    "UPDATE",
+                    "DELETE"
+                ]
+            }
+        ]
+    }
+}

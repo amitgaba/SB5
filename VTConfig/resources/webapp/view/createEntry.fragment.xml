@@ -1,0 +1,37 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table"
+	class="sapUiSizeCompact">
+	<Dialog title="Export Configuration" resizable="false" draggable="false" contentWidth="900px" contentHeight="550px">
+		<Panel width="auto" class="sapUiResponsiveMargin">
+			<content>
+				<VBox class="sapUiSmallMargin">
+					<f:SimpleForm title="Download View Details"  maxContainerCols="2"  id="SimpleFormDisplay1">
+						<f:content>
+							<Label text="Functional Area" class="labelFragmentAlign"/>
+							<Input id="function" enabled="true"/>							
+							<Label text="View Name" class="labelFragmentAlign"/>
+							<Input id="viewname" enabled="true" valueHelpRequest="onViewValueHelpRequest"/>
+							<Label text="Schema Name" class="labelFragmentAlign"/>
+							<Input id="schemaname" enabled="true"/>							
+							<Label text="Scheduler" class="labelFragmentAlign"/>
+							<Input id="Schedule" enabled="true"/>							
+							<Label text="Filter" class="labelFragmentAlign"/>
+							<TextArea id="Filter" value=" "></TextArea>
+							<Label text="OutputColumns" class="labelFragmentAlign"/>
+							<TextArea id="OutCol" value=" "></TextArea>	
+							<Label text="PlaceHolder" class="labelFragmentAlign"/>
+							<TextArea id="PlHold" value=" "></TextArea>	
+							<Label text="Schedule ID" class="labelFragmentAlign"/>
+							<Input id="SCHID" enabled="true"/>	
+						</f:content>
+					</f:SimpleForm>
+				</VBox>
+			</content>
+		</Panel>
+		<beginButton>
+			<Button text="Save" press="onSave"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" press="onCancelDialog"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

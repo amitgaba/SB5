@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="MT_VIRTUAL_TABLES.DB::CVC_TEST_HIEARCHY" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="CVC_TEST_HIEARCHY"/>
+<localVariables>
+  <variable id="VAR_PARTNER">
+    <descriptions defaultDescription="VAR_PARTNER"/>
+    <variableProperties datatype="VARBINARY" length="16" scale="null" defaultValue="">
+      <valueDomain type="AttributeValue">
+        <attribute name="PARTNER_GUID"/>
+      </valueDomain>
+      <selection multiLine="true" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+  <variable id="VAR_ATBEZ">
+    <descriptions defaultDescription="VAR_ATBEZ"/>
+    <variableProperties datatype="NVARCHAR" length="30" scale="null" defaultValue="">
+      <valueDomain type="AttributeValue">
+        <attribute name="ATBEZ"/>
+      </valueDomain>
+      <selection multiLine="true" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources>
+  <DataSource id="MT_VIRTUAL_TABLES.DB::KSML_CRM">
+    <resourceUri>MT_VIRTUAL_TABLES.DB::KSML_CRM</resourceUri>
+  </DataSource>
+  <DataSource id="MT_VIRTUAL_TABLES.DB::AUSP_CRM">
+    <resourceUri>MT_VIRTUAL_TABLES.DB::AUSP_CRM</resourceUri>
+  </DataSource>
+  <DataSource id="MT_VIRTUAL_TABLES.DB::SWOR_CRM">
+    <resourceUri>MT_VIRTUAL_TABLES.DB::SWOR_CRM</resourceUri>
+  </DataSource>
+  <DataSource id="MT_VIRTUAL_TABLES.DB::CABNT_CRM">
+    <resourceUri>MT_VIRTUAL_TABLES.DB::CABNT_CRM</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="T_KSML">
+    <viewAttributes>
+      <viewAttribute id="CLINT">
+        <descriptions defaultDescription="Internal Class Number"/>
+      </viewAttribute>
+      <viewAttribute id="IMERK">
+        <descriptions defaultDescription="Internal characteristic"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="MT_VIRTUAL_TABLES.DB::KSML_CRM">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLINT" source="CLINT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="IMERK" source="IMERK"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="T_AUSP">
+    <viewAttributes>
+      <viewAttribute id="ATINN">
+        <descriptions defaultDescription="Internal characteristic"/>
+      </viewAttribute>
+      <viewAttribute id="ATWRT">
+        <descriptions defaultDescription="Characteristic Value"/>
+      </viewAttribute>
+      <viewAttribute id="ATFLV">
+        <descriptions defaultDescription="Internal floating point from"/>
+      </viewAttribute>
+      <viewAttribute id="PARTNER_GUID">
+        <descriptions defaultDescription="Business Partner GUID"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="MT_VIRTUAL_TABLES.DB::AUSP_CRM">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATINN" source="ATINN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATWRT" source="ATWRT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATFLV" source="ATFLV"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PARTNER_GUID" source="PARTNER_GUID"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="T_SWOR" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="SPRAS">
+        <descriptions defaultDescription="Language Key"/>
+      </viewAttribute>
+      <viewAttribute id="CLINT">
+        <descriptions defaultDescription="Internal Class Number"/>
+      </viewAttribute>
+      <viewAttribute id="KSCHL">
+        <descriptions defaultDescription="Keywords"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="MT_VIRTUAL_TABLES.DB::SWOR_CRM">
+      <mapping xsi:type="Calculation:AttributeMapping" target="SPRAS" source="SPRAS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CLINT" source="CLINT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="KSCHL" source="KSCHL"/>
+    </input>
+  
+    <filter>(&quot;SPRAS&quot; ='E')</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="T_CABN_T" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="ATINN">
+        <descriptions defaultDescription="Internal characteristic"/>
+      </viewAttribute>
+      <viewAttribute id="SPRAS">
+        <descriptions defaultDescription="Language Key"/>
+      </viewAttribute>
+      <viewAttribute id="ATBEZ">
+        <descriptions defaultDescription="Characteristic description"/>
+      </viewAttribute>
+      <viewAttribute id="ATUE1">
+        <descriptions defaultDescription="First Line of Heading"/>
+      </viewAttribute>
+      <viewAttribute id="ATUE2">
+        <descriptions defaultDescription="Second line of heading"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="MT_VIRTUAL_TABLES.DB::CABNT_CRM">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATINN" source="ATINN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SPRAS" source="SPRAS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATBEZ" source="ATBEZ"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATUE1" source="ATUE1"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATUE2" source="ATUE2"/>
+    </input>
+  
+    <filter>(&quot;SPRAS&quot; ='E')</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="IMERK">
+        <descriptions defaultDescription="Internal characteristic"/>
+      </viewAttribute>
+      <viewAttribute id="KSCHL">
+        <descriptions defaultDescription="Keywords"/>
+      </viewAttribute>
+      <viewAttribute hidden="true" id="JOIN$CLINT$CLINT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="T_KSML">
+      <mapping xsi:type="Calculation:AttributeMapping" target="IMERK" source="IMERK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CLINT$CLINT" source="CLINT"/>
+    </input>
+    <input node="T_SWOR">
+      <mapping xsi:type="Calculation:AttributeMapping" target="KSCHL" source="KSCHL"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CLINT$CLINT" source="CLINT"/>
+    </input>
+    <joinAttribute name="JOIN$CLINT$CLINT"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_2" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ATINN">
+        <descriptions defaultDescription="Internal characteristic"/>
+      </viewAttribute>
+      <viewAttribute id="ATWRT">
+        <descriptions defaultDescription="Characteristic Value"/>
+      </viewAttribute>
+      <viewAttribute id="ATFLV" aggregationType="sum">
+        <descriptions defaultDescription="Internal floating point from"/>
+      </viewAttribute>
+      <viewAttribute id="PARTNER_GUID">
+        <descriptions defaultDescription="Business Partner GUID"/>
+      </viewAttribute>
+      <viewAttribute id="ATBEZ">
+        <descriptions defaultDescription="Characteristic description"/>
+      </viewAttribute>
+      <viewAttribute id="ATUE1">
+        <descriptions defaultDescription="First Line of Heading"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="T_AUSP">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATINN" source="ATINN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATWRT" source="ATWRT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATFLV" source="ATFLV"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PARTNER_GUID" source="PARTNER_GUID"/>
+    </input>
+    <input node="T_CABN_T">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATBEZ" source="ATBEZ"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATUE1" source="ATUE1"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATINN" source="ATINN"/>
+    </input>
+    <joinAttribute name="ATINN"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_3" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="IMERK">
+        <descriptions defaultDescription="Internal characteristic"/>
+      </viewAttribute>
+      <viewAttribute id="KSCHL">
+        <descriptions defaultDescription="Keywords"/>
+      </viewAttribute>
+      <viewAttribute id="ATINN">
+        <descriptions defaultDescription="Internal characteristic"/>
+      </viewAttribute>
+      <viewAttribute id="ATWRT">
+        <descriptions defaultDescription="Characteristic Value"/>
+      </viewAttribute>
+      <viewAttribute id="ATFLV" aggregationType="sum">
+        <descriptions defaultDescription="Internal floating point from"/>
+      </viewAttribute>
+      <viewAttribute id="PARTNER_GUID">
+        <descriptions defaultDescription="Business Partner GUID"/>
+      </viewAttribute>
+      <viewAttribute id="ATBEZ">
+        <descriptions defaultDescription="Characteristic description"/>
+      </viewAttribute>
+      <viewAttribute id="ATUE1">
+        <descriptions defaultDescription="First Line of Heading"/>
+      </viewAttribute>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Join_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="IMERK" source="IMERK"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="KSCHL" source="KSCHL"/>
+    </input>
+    <input node="Join_2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATINN" source="ATINN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATWRT" source="ATWRT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATFLV" source="ATFLV"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PARTNER_GUID" source="PARTNER_GUID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATBEZ" source="ATBEZ"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ATUE1" source="ATUE1"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="IMERK" source="ATWRT"/>
+    </input>
+    <joinAttribute name="IMERK"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Join_3">
+  <attributes>
+    <attribute id="IMERK" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Internal characteristic"/>
+      <keyMapping columnObjectName="Join_3" columnName="IMERK"/>
+    </attribute>
+    <attribute id="KSCHL" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Keywords"/>
+      <keyMapping columnObjectName="Join_3" columnName="KSCHL"/>
+    </attribute>
+    <attribute id="ATINN" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Internal characteristic"/>
+      <keyMapping columnObjectName="Join_3" columnName="ATINN"/>
+    </attribute>
+    <attribute id="ATWRT" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Characteristic Value"/>
+      <keyMapping columnObjectName="Join_3" columnName="ATWRT"/>
+    </attribute>
+    <attribute id="PARTNER_GUID" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Business Partner GUID"/>
+      <localVariable>VAR_PARTNER</localVariable>
+      <keyMapping columnObjectName="Join_3" columnName="PARTNER_GUID"/>
+    </attribute>
+    <attribute id="ATBEZ" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Characteristic description"/>
+      <localVariable>VAR_ATBEZ</localVariable>
+      <keyMapping columnObjectName="Join_3" columnName="ATBEZ"/>
+    </attribute>
+    <attribute id="ATUE1" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="First Line of Heading"/>
+      <keyMapping columnObjectName="Join_3" columnName="ATUE1"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="ATFLV" order="5" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Internal floating point from"/>
+      <measureMapping columnObjectName="Join_3" columnName="ATFLV"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="501.2463432472361" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="T_KSML" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="512" y="496.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="T_AUSP" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="91.99999999999994" y="496.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="T_SWOR" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="722" y="496.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="T_CABN_T" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302.00000000000006" y="496.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="538.6666666666667" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="T_KSML" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="T_SWOR" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="275.33333333333337" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="T_AUSP" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="T_CABN_T" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_3" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="501.2463432472361" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Join_1" modelObjectNameSpace="Join_3" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="Join_2" modelObjectNameSpace="Join_3" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
