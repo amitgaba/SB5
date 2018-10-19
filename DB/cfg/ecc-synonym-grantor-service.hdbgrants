@@ -10,6 +10,18 @@
                     ]
                 },  
                 {
+                    "name": "MAST",
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                },      
+                {
+                    "name": "STPO",
+                    "privileges_with_grant_option": [
+                        "SELECT"
+                    ]
+                },                      
+                {
                     "name": "VIEW_COLUMNS",
                     "schema": "SYS",
                     "privileges_with_grant_option": [
@@ -41,6 +53,18 @@
                     ],
                     "schema": "SYS"                    
                 },
+                                {
+                    "name": "MAST",
+                    "privileges": [
+                        "SELECT"
+                    ]
+                },       
+                                {
+                    "name": "STPO",
+                    "privileges": [
+                        "SELECT"
+                    ]
+                },                       
                 {
                     "name": "M_TIME_DIMENSION",
                     "privileges": [

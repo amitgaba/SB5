@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="MT_VIRTUAL_TABLES.DB::GET_MAT_VIEW" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="GET_MAT_VIEW"/>
+<localVariables/>
+<variableMappings/>
+<dataSources/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:GraphView" id="Graph_2" workspace="MT_VIRTUAL_TABLES.DB::MT_REL" action="GET_NEIGHBORHOOD">
+    <viewAttributes>
+      <viewAttribute datatype="NVARCHAR" length="18" id="MATNR"/>
+      <viewAttribute datatype="INTEGER" id="DEPTH"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <getNeighborhoodParameterization>
+      <startVertices>&quot;000000000000004507&quot;,&quot;000000000000013954&quot;,&quot;000000000030027401&quot;</startVertices>
+      <direction>any</direction>
+      <minDepth>0</minDepth>
+      <maxDepth>500</maxDepth>
+      <vertexFilter></vertexFilter>
+      <edgeFilter></edgeFilter>
+    </getNeighborhoodParameterization>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Graph_2">
+  <attributes>
+    <attribute id="MATNR" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MATNR"/>
+      <keyMapping columnObjectName="Graph_2" columnName="MATNR"/>
+    </attribute>
+    <attribute id="DEPTH" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DEPTH"/>
+      <keyMapping columnObjectName="Graph_2" columnName="DEPTH"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Graph_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="-304" y="226"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

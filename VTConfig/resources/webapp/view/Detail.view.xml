@@ -45,6 +45,8 @@
 					items="{Schedule}"
 					updateFinished="onListUpdateFinished"
 					noDataText="{i18n>detailLineItemTableNoDataText}"
+					selectionBehavior="RowSelector"
+					mode="SingleSelect"					
 					busyIndicatorDelay="{detailView>/lineItemTableDelay}"
 					class="sapUiResponsiveMargin">
 				<headerToolbar>
@@ -101,7 +103,15 @@
 					id="shareTile"
 					title="{detailView>/saveAsTileTitle}"/>
 		</semantic:saveAsTileAction>
-
+		<semantic:customFooterContent>
+			<Button press="onCopy" icon="sap-icon://copy" tooltip="Copy"/>
+		</semantic:customFooterContent>
+		<semantic:customFooterContent>
+			<Button press="onEdit" icon="sap-icon://edit" tooltip="Edit"/>
+		</semantic:customFooterContent>
+		<semantic:customFooterContent>
+			<Button press="onDelete" icon="sap-icon://delete" tooltip="Delete"/>
+		</semantic:customFooterContent>
 	</semantic:DetailPage>
 
 </mvc:View>

@@ -1,0 +1,61 @@
+PROCEDURE "MT_VIRTUAL_TABLES.DB::Create_Virtual_Tables"( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+AS
+BEGIN
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+ declare nRowCount Integer;
+ declare nCurrCount Integer :=1;
+ declare nOffset Integer;
+ 
+ declare lv_view nvarchar(255);
+ declare lv_schema nvarchar(255);
+ declare lv_virtual nvarchar(255);
+ declare lv_sqlquery nvarchar(1000);
+ declare lv_id Integer;
+ 
+   lt_virtual = 
+   select * from "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H"  where
+   VIRTUAL_BUILT <> 'X';
+   
+ 	SELECT COUNT(1) INTO nRowCount FROM :lt_virtual;
+	
+	while nCurrCount <= nRowCount do
+		nOffset = nCurrCount - 1;
+		lt_process = 
+			select a.VIEW_NAME, a.SCHEMA_NAME, VIRTUAL_NAME , id
+				from :lt_virtual as a
+				limit 1
+				offset :nOffset ;
+				
+		nCurrCount = nCurrCount + 1;				
+		
+		select max(view_name) into lv_view from :lt_process;
+		
+		select max(SCHEMA_NAME) into lv_schema from :lt_process;
+		
+		select max(VIRTUAL_NAME) into lv_virtual from :lt_process;
+		
+		select max(id) into lv_id from :lt_process;
+		
+   select 'CREATE VIRTUAL TABLE "DB5_' || :lv_virtual || '" AT ODBC_DB5.DB5."' || :lv_schema || '"."' || :lv_view || '";'
+   into lv_sqlquery
+    from "MT_VIRTUAL_TABLES.DB::Dummy";
+
+   EXECUTE IMMEDIATE (:lv_sqlquery);
+   
+   select 'CREATE VIRTUAL TABLE "OB5_' || :lv_virtual || '" AT ODBC_OB5.OB5."' || :lv_schema || '"."' || :lv_view || '";'
+   into lv_sqlquery
+    from "MT_VIRTUAL_TABLES.DB::Dummy";
+   
+   EXECUTE IMMEDIATE (:lv_sqlquery);
+   
+   update "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H" 
+	set VIRTUAL_BUILT = 'X'
+	where ID = :lv_id; 
+	end while;  
+   
+END

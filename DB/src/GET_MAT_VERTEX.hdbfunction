@@ -1,0 +1,48 @@
+FUNCTION "MT_VIRTUAL_TABLES.DB::GET_MAT_VERTEX"( )
+	RETURNS TABLE
+	(
+	 "MATNR"	 NVARCHAR(18),
+	 "WERKS"	 NVARCHAR(4),
+	 "_ID"		NVARCHAR(23)
+	)
+       LANGUAGE SQLSCRIPT 
+       SQL SECURITY INVOKER AS 
+BEGIN 
+    /*****************************
+        Write your function logic
+    ****************************/
+
+-- lt_childs = 
+-- 				SELECT
+-- 					STPO."IDNRK" AS "MATNR",
+-- 					MAST."MATNR" AS "MATNR_LVL1"
+-- 				FROM 
+-- 					"MT_VIRTUAL_TABLES.DB::STPO_ECC" as  STPO 
+-- 					JOIN "MT_VIRTUAL_TABLES.DB::MAST_ECC" MAST ON MAST."STLNR" =  STPO."STLNR" 
+-- 				WHERE 
+-- 					--"STLST" != '99' AND 
+-- 					MAST."WERKS" = 'CH46' 
+-- --					and 					stpo.idnrk = '000000000030403727' and mast.matnr = '000000000030415286'
+
+-- 					and mast.matnr = '000000000030027401' 
+-- 				GROUP BY
+-- 					STPO."IDNRK",
+-- 					MAST."MATNR";
+					
+return     
+				SELECT
+					MAST."MATNR" ,
+					max(MAST."WERKS") as werks,
+					MAST."MATNR" || '_' || max(MAST."WERKS") as "_ID"
+				FROM 
+					"MT_VIRTUAL_TABLES.DB::MAST_ECC" MAST 
+				-- WHERE 
+					--"STLST" != '99' AND 
+					-- MAST."WERKS" = 'CH46'  and
+					-- ( mast.matnr = '000000000030027401' OR mast.matnr IN (select MATNR from :lt_childs) )
+--					and 					stpo.idnrk = '000000000030403727' and mast.matnr = '000000000030415286'
+where matnr is not null
+				GROUP BY
+					MAST."MATNR";
+					
+END;

@@ -1,0 +1,4 @@
+namespace MT_VIRTUAL_TABLES.DB;
+
+context TestView {
+};

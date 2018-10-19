@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="MT_VIRTUAL_TABLES.DB::EdgeView" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="Edge"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="MT_VIRTUAL_TABLES.DB::GET_MAT_CHILDS" type="TABLE_FUNCTION">
+    <resourceUri>MT_VIRTUAL_TABLES.DB::GET_MAT_CHILDS</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+<logicalModel id="MT_VIRTUAL_TABLES.DB::GET_MAT_CHILDS">
+  <attributes>
+    <attribute id="MATNR" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MATNR"/>
+      <keyMapping columnObjectName="GET_MAT_CHILDS" columnName="MATNR"/>
+    </attribute>
+    <attribute id="MENGE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MENGE"/>
+      <keyMapping columnObjectName="GET_MAT_CHILDS" columnName="MENGE"/>
+    </attribute>
+    <attribute id="WERKS" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="WERKS"/>
+      <keyMapping columnObjectName="GET_MAT_CHILDS" columnName="WERKS"/>
+    </attribute>
+    <attribute id="STLTY" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="STLTY"/>
+      <keyMapping columnObjectName="GET_MAT_CHILDS" columnName="STLTY"/>
+    </attribute>
+    <attribute id="_ID" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="_ID"/>
+      <keyMapping columnObjectName="GET_MAT_CHILDS" columnName="_ID"/>
+    </attribute>
+    <attribute id="MATNR_LVL1" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MATNR_LVL1"/>
+      <keyMapping columnObjectName="GET_MAT_CHILDS" columnName="MATNR_LVL1"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

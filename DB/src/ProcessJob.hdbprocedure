@@ -1,0 +1,77 @@
+PROCEDURE "MT_VIRTUAL_TABLES.DB::ProcessJob"( IN schedule_id nvarchar(10) )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+ AS
+BEGIN
+     /*************************************
+       Write your procedure logic 
+   *************************************/
+ declare nRowCount Integer;
+ declare nCurrCount Integer :=1;
+ declare lv_id Integer;
+ declare lv_item Integer;
+ declare nOffset Integer;
+ 
+ call "MT_VIRTUAL_TABLES.DB::Create_Virtual_Tables"( );
+ 
+ lt_curr_week = 
+	select case when a.day_of_week >= b.day_of_week then a.week - b.week + 1 else a.week - b.week end as cweek
+		from 
+		(select max(week) as week, max(day_of_week) as day_of_week
+			 from "MT_VIRTUAL_TABLES.DB::M_TIME_DIMENSION"
+			where date_sql = current_date ) as a
+		inner join
+		(select max(week) as week, max(day_of_week) as day_of_week
+			 from "MT_VIRTUAL_TABLES.DB::M_TIME_DIMENSION"
+			where date_sql = add_days(last_day(add_months(current_date,-1)),1) ) as b
+		on 1 = 1;
+	
+ lt_today_cron = select to_Varchar(EXTRACT ( day from CURRENT_DATE )) as cdate,
+	   to_varchar(EXTRACT ( month from CURRENT_DATE )) as cmon,
+	   to_varchar(EXTRACT ( year from CURRENT_DATE )) as cyear,	
+--	   to_varchar(week(current_date) - week(last_day(add_months(current_date,-1)))) as week_no, 
+	   to_varchar(b.cweek) as week_no,
+ 	   dayname(current_date) as day_name
+ from "MT_VIRTUAL_TABLES.DB::Dummy" as a 
+ inner join :lt_curr_week as b
+ on 1 = 1;
+ 
+ lt_schedule = select id,item,
+	   SUBSTR_BEFORE(cron, ' ') as cyear,
+	   SUBSTR_BEFORE(SUBSTR_AFTER(cron, ' '),' ') as cmon,
+	   SUBSTR_BEFORE(substr_after(SUBSTR_AFTER(cron, ' '),' '),' ') as cdate,
+	   SUBSTR_BEFORE(substr_after(substr_after(SUBSTR_AFTER(cron, ' '),' '),' '),' ') as week_no,
+	   substr_after(substr_after(substr_after(SUBSTR_AFTER(cron, ' '),' '),' '),' ') as day_name	  
+ from "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I"
+ where schid = :schedule_id;
+ 
+ et_schedule = 
+	select a.id, a.item
+		from :lt_schedule as a
+		inner join :lt_today_cron as b
+		on (a.cdate = b.cdate or a.cdate in ('',' ','*') ) and
+		    (a.cmon = b.cmon or a.cmon in ('',' ','*') ) and
+		    (a.cyear = b.cyear or a.cyear in ('',' ','*') ) and
+			(a.week_no = b.week_no or a.week_no in ('',' ','*') ) 		    and
+			(a.day_name = b.day_name or a.day_name in ('',' ','*') );
+
+	SELECT COUNT(1) INTO nRowCount FROM :et_schedule;
+	
+	while nCurrCount <= nRowCount do
+		nOffset = nCurrCount - 1;
+		lt_process = 
+			select a.id, a.item 
+				from :et_schedule as a
+				limit 1
+				offset :nOffset ;
+				
+		nCurrCount = nCurrCount + 1;				
+		
+		select max(id) into lv_id from :lt_process;
+		
+		select max(item) into lv_item from :lt_process;
+		
+		call  "MT_VIRTUAL_TABLES.DB::Compare_Exec_Time"(:lv_id, :lv_item);
+	end while;  
+END

@@ -13,6 +13,7 @@ BEGIN
    declare variantid integer;
    declare scheduleid integer;
    declare virtualtab nvarchar(255);
+   declare sqlquery nvarchar(1000);
    
    select max(id) into viewid from "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H" where view_name = :viewname;
    if :viewid is null then
@@ -28,12 +29,23 @@ BEGIN
    select :viewid || '_' || :viewname into virtualtab from "MT_VIRTUAL_TABLES.DB::Dummy";
 
    insert into "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H" 
-   values(:viewid,:viewname,:schemaname,functional,virtualtab);
+   values(:viewid,:viewname,:schemaname,functional,virtualtab,'');
    
    insert into "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I" 
 	values(:viewid,1,:cron,:schid,:filter,:outcols, :plhold);	
 	
+   --select 'CREATE VIRTUAL TABLE "DB5_' || virtualtab || '" AT ODBC_DB5.DB5."' || :schemaname || '"."' || :viewname || '";'
+   --into sqlquery
+   -- from "MT_VIRTUAL_TABLES.DB::Dummy";
 
+   --EXECUTE IMMEDIATE (:SQLQUERY);
+   
+   --select 'CREATE VIRTUAL TABLE "OB5_' || virtualtab || '" AT ODBC_OB5.OB5."' || :schemaname || '"."' || :viewname || '";'
+   --into sqlquery
+   -- from "MT_VIRTUAL_TABLES.DB::Dummy";
+   
+   --EXECUTE IMMEDIATE (:SQLQUERY);
+   
    else 
    select max(item) + 1 into variantid from 	
 	"MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I" 

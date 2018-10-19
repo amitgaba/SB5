@@ -1,0 +1,19 @@
+PROCEDURE "MT_VIRTUAL_TABLES.DB::UpdateView_H"(
+			IN viewid integer, itemid integer,
+			IN filter NVARCHAR(500), IN cron NVARCHAR(50),
+			IN outcol NVARCHAR(500),IN plhold NVARCHAR(2000), IN schid NVARCHAR(10)
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+    AS
+BEGIN
+	
+	update "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I" 
+		set cron = :cron, SCHID = :schid, "FILTER" = :filter, OUTCOLS = :outcol, plhold = :plhold
+		where "ID" = :viewid and 
+			  ITEM = :itemid;
+	
+
+   
+END

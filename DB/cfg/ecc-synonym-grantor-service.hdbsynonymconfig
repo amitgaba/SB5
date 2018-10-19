@@ -16,5 +16,17 @@
             "schema": "_SYS_BI",
             "object": "M_TIME_DIMENSION"
         }
-    }	    
+    },
+        "MT_VIRTUAL_TABLES.DB::MAST_ECC": {
+        "target": {
+            "schema.configure": "ecc-synonym-grantor-service/schema",
+            "object": "MAST"
+        }
+    },
+        "MT_VIRTUAL_TABLES.DB::STPO_ECC": {
+        "target": {
+            "schema.configure": "ecc-synonym-grantor-service/schema",
+            "object": "STPO"
+        }
+    }    
 }

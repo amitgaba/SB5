@@ -68,6 +68,335 @@ sap.ui.define([
 				oShareDialog.open();
 			},
 
+/* ------ Copied from DB5  */
+
+		onEdit: function(oEvent) {
+				var userModel = new sap.ui.model.json.JSONModel("/services/userapi/currentUser");
+				this._getDialog().setModel(userModel, "userapi");
+				this._getDialog().open();
+
+		},
+
+		onCopy: function(oEvent) {
+				var userModel = new sap.ui.model.json.JSONModel("/services/userapi/currentUser");
+				this._getCopyDialog().setModel(userModel, "userapi");
+				this._getCopyDialog().open();
+
+
+		},		
+		onDelete: function(oEvent) {
+
+			var oGlobalBusyDialog = new sap.m.BusyDialog();
+			oGlobalBusyDialog.open();
+			var url = "/DeleteItem.xsjs";
+
+			var oViewModel = this.getModel("detailView");
+			var ahead = Number(this.getView().byId('objectHeader').mProperties.number);
+			var aItems = this.getView().byId('lineItemsList').getItems();
+		
+			var aSelectedItems = [];
+			for (var i=0; i<aItems.length;i++) {
+	   			if (aItems[i].getSelected()) {
+    	   			aSelectedItems.push(aItems[i]);
+    			}
+			}
+			var aitem = Number(aSelectedItems[0].getCells()[0].getText());
+
+				var oData = {
+					"ID": ahead,
+					"ITEMID": aitem
+				};
+
+
+				jQuery
+					.ajax({
+						type: "POST",
+						data: JSON.stringify(oData),
+						dataType: "json",
+						contentType: "application/json",
+						url: url,
+					success: function(reserv) {
+						sap.m.MessageToast.show("Deletion Successful");
+						oGlobalBusyDialog.close();
+					}
+				});
+				this.onRefresh();			
+
+		},
+		onCopyCancelDialog: function() {
+			this._oDialog.close();
+		},
+		
+		onEditCancelDialog: function() {
+			this._oDialog.close();
+		},
+		_getEditDialog: function() {
+			if (!this._oDialog) {
+				this._oDialog = sap.ui.xmlfragment("mt.vt.view.EditEntry", this);
+				this.getView().addDependent(this._oDialog);
+			}
+
+			return this._oDialog;
+		},					
+
+		onCancelDialog: function() {
+			this._oDialog.close();
+		},		
+		onEditSave: function() {
+
+			var oGlobalBusyDialog = new sap.m.BusyDialog();
+			oGlobalBusyDialog.open();
+
+			var url = "/UpdateData.xsjs";
+
+
+			var schedule = sap.ui.getCore().getElementById('EditSchedule').getValue();
+			var filter = sap.ui.getCore().getElementById('EditFilter').getValue();
+			var OutCol = sap.ui.getCore().getElementById('EditOutCol').getValue();
+			var PlHold = sap.ui.getCore().getElementById('EditPlHold').getValue();
+			var schid = sap.ui.getCore().getElementById('EditSCHID').getValue();
+			
+				var oViewModel = this.getModel("detailView");
+				var ahead = Number(this.getView().byId('objectHeader').mProperties.number);
+				var aItems = this.getView().byId('lineItemsList').getItems();
+				
+				var aSelectedItems = [];
+				for (var i=0; i<aItems.length;i++) {
+    			if (aItems[i].getSelected()) {
+        			aSelectedItems.push(aItems[i]);
+    			}
+				}
+				var aitem = Number(aSelectedItems[0].getCells()[0].getText());
+
+				var oData = {
+					"ID": ahead,
+					"ITEMID": aitem,
+					"Cron": schedule,
+					"Filter": filter,
+					"OutCol": OutCol,
+					"PlHold": PlHold,
+					"Schid":schid
+				};
+
+				jQuery
+					.ajax({
+						type: "POST",
+						data: JSON.stringify(oData),
+						dataType: "json",
+						contentType: "application/json",
+						url: url,
+					success: function(reserv) {
+						sap.m.MessageToast.show("Updation Successful");
+						oGlobalBusyDialog.close();
+						this._oDialog.close();						
+					}
+				});
+				this.onRefresh();
+		},
+
+		onCopySave: function() {
+
+			var oGlobalBusyDialog = new sap.m.BusyDialog();
+			oGlobalBusyDialog.open();
+
+			var url = "/SaveData.xsjs";
+			
+			var functional = sap.ui.getCore().getElementById('Copyfunction').getValue();
+			var viewname = sap.ui.getCore().getElementById('Copyviewname').getValue();
+			var schemaname = sap.ui.getCore().getElementById('Copyschemaname').getValue();
+			var schedule = sap.ui.getCore().getElementById('CopySchedule').getValue();
+			var filter = sap.ui.getCore().getElementById('CopyFilter').getValue();
+			var OutCol = sap.ui.getCore().getElementById('CopyOutCol').getValue();
+			var PlHold = sap.ui.getCore().getElementById('CopyPlHold').getValue();
+			var SchID = sap.ui.getCore().getElementById('CopySCHID').getValue();
+				
+				var oData = {
+					"Function": functional,
+					"ViewName": viewname,
+					"SchemaName": schemaname,
+					"Cron": schedule,
+					"Filter": filter,
+					"OutCol": OutCol,
+					"PlHold": PlHold,
+					"SchID": SchID
+				};
+
+				jQuery
+					.ajax({
+						type: "POST",
+						data: JSON.stringify(oData),
+						dataType: "json",
+						contentType: "application/json",
+						url: url,
+					success: function(reserv) {
+						sap.m.MessageToast.show("Creation Successful");
+						oGlobalBusyDialog.close();
+						this._oDialog.close();
+					}
+				});
+				this.onRefresh();
+		},
+		_getCopyDialog: function() {
+			if (!this._oDialog) { 
+				this._oDialog = sap.ui.xmlfragment("mt.vt.view.CopyEntry", this);
+				this.getView().addDependent(this._oDialog);
+			} 
+				var oViewModel = this.getModel("detailView");
+				var ahead = Number(this.getView().byId('objectHeader').mProperties.number);
+				var aItems = this.getView().byId('lineItemsList').getItems();
+				
+				var aSelectedItems = [];
+				for (var i=0; i<aItems.length;i++) {
+    			if (aItems[i].getSelected()) {
+        			aSelectedItems.push(aItems[i]);
+    			}
+				}
+				var aitem = Number(aSelectedItems[0].getCells()[0].getText());
+/*			https://ch00sdb5q.eu.mt.mtnet:51076/ExtractData.xsodata/VARIANT?$format=json&$filter=(VID eq 1 and ID eq 1)&$select=FILTER */
+
+			
+			var url = '/VT.xsodata/ITEM?$format=json&$filter=(ID eq ' + ahead + ' and ITEM eq ' + aitem + ' )&$select=FILTER,PLHOLD,OUTCOLS,CRON,SCHID';
+			var filter;	var plhold; var outcols; var cron;
+			 var schema;
+			var viewname; var func;
+			var schid;
+			jQuery.ajax({
+				async: false,
+				type: "GET",
+				dataType: "json",
+				contentType: "application/json",
+				url: url,
+				error: function(jqXHR, textStatus, errorThrown) {
+
+				},
+
+				success: function(oData, textStatus, jqXHR) {
+					filter = oData.d.results[0].FILTER;
+					plhold = oData.d.results[0].PLHOLD;
+					outcols = oData.d.results[0].OUTCOLS;
+					cron = oData.d.results[0].CRON;
+					schid = oData.d.results[0].SCHID;
+				}
+
+			});
+			
+
+		// https://ch00sdb5q.eu.mt.mtnet:51076/ExtractData.xsodata/HEADER?$format=json&$filter=(ID eq 3)&$select=SCHEMA_NAME,VIEW_NAME,FUNCTION
+		
+		url = '/VT.xsodata/HEAD?$format=json&$filter=(ID eq ' + ahead  + ')&$select=SCHEMA_NAME,VIEW_NAME,FUNCTION';
+		jQuery.ajax({
+				async: false,
+				type: "GET",
+				dataType: "json",
+				contentType: "application/json",
+				url: url,
+				error: function(jqXHR, textStatus, errorThrown) {
+
+				},
+
+				success: function(oData, textStatus, jqXHR) {
+					schema = oData.d.results[0].SCHEMA_NAME;
+					viewname = oData.d.results[0].VIEW_NAME;
+					func = oData.d.results[0].FUNCTION;
+				}
+
+			});				
+
+				sap.ui.getCore().byId("Copyfunction").setValue(func);
+				sap.ui.getCore().byId("Copyviewname").setValue(viewname);
+				sap.ui.getCore().byId("Copyschemaname").setValue(schema);
+			
+				sap.ui.getCore().byId("CopyFilter").setValue(filter);
+				sap.ui.getCore().byId("CopyPlHold").setValue(plhold);
+				sap.ui.getCore().byId("CopyOutCol").setValue(outcols);
+				sap.ui.getCore().byId("CopySchedule").setValue(cron);
+				sap.ui.getCore().byId("CopySCHID").setValue(schid);
+				// 
+			return this._oDialog;
+		},		
+		
+		_getDialog: function() {
+			if (!this._oDialog) { 
+				this._oDialog = sap.ui.xmlfragment("mt.vt.view.EditEntry", this);
+				this.getView().addDependent(this._oDialog);
+			} 
+				var oViewModel = this.getModel("detailView");
+				var ahead = Number(this.getView().byId('objectHeader').mProperties.number);
+				var aItems = this.getView().byId('lineItemsList').getItems();
+				
+				var aSelectedItems = [];
+				for (var i=0; i<aItems.length;i++) {
+    			if (aItems[i].getSelected()) {
+        			aSelectedItems.push(aItems[i]);
+    			}
+				}
+				var aitem = Number(aSelectedItems[0].getCells()[0].getText());
+/*			https://ch00sdb5q.eu.mt.mtnet:51076/ExtractData.xsodata/VARIANT?$format=json&$filter=(VID eq 1 and ID eq 1)&$select=FILTER */
+
+			
+			var url = '/VT.xsodata/ITEM?$format=json&$filter=(ID eq ' + ahead + ' and ITEM eq ' + aitem + ' )&$select=FILTER,PLHOLD,OUTCOLS,CRON,SCHID';
+			var filter;	var plhold; var outcols; var cron;
+			var schema;
+			var viewname; var func;
+			var schid; 
+			jQuery.ajax({
+				async: false,
+				type: "GET",
+				dataType: "json",
+				contentType: "application/json",
+				url: url,
+				error: function(jqXHR, textStatus, errorThrown) {
+
+				},
+
+				success: function(oData, textStatus, jqXHR) {
+					filter = oData.d.results[0].FILTER;
+					plhold = oData.d.results[0].PLHOLD;
+					outcols = oData.d.results[0].OUTCOLS;
+					cron = oData.d.results[0].CRON;
+					schid = oData.d.results[0].SCHID;
+				}
+
+			});
+			
+
+
+		// https://ch00sdb5q.eu.mt.mtnet:51076/ExtractData.xsodata/HEADER?$format=json&$filter=(ID eq 3)&$select=SCHEMA_NAME,VIEW_NAME,FUNCTION
+		
+		url = '/VT.xsodata/HEAD?$format=json&$filter=(ID eq ' + ahead  + ')&$select=SCHEMA_NAME,VIEW_NAME,FUNCTION';
+		jQuery.ajax({
+				async: false,
+				type: "GET",
+				dataType: "json",
+				contentType: "application/json",
+				url: url,
+				error: function(jqXHR, textStatus, errorThrown) {
+
+				},
+
+				success: function(oData, textStatus, jqXHR) {
+					schema = oData.d.results[0].SCHEMA_NAME;
+					viewname = oData.d.results[0].VIEW_NAME;
+					func = oData.d.results[0].FUNCTION;
+				}
+
+			});				
+
+				sap.ui.getCore().byId("Editfunction").setValue(func);
+				sap.ui.getCore().byId("Editviewname").setValue(viewname);
+				sap.ui.getCore().byId("Editschemaname").setValue(schema);
+			
+				sap.ui.getCore().byId("EditFilter").setValue(filter);
+				sap.ui.getCore().byId("EditPlHold").setValue(plhold);
+				sap.ui.getCore().byId("EditOutCol").setValue(outcols);
+				sap.ui.getCore().byId("EditSchedule").setValue(cron);
+				sap.ui.getCore().byId("EditSCHID").setValue(schid);
+				// 
+			return this._oDialog;
+		},
+		
+/** end of copy 		 */
+
 			/**
 			 * Updates the item count within the line item table's header
 			 * @param {object} oEvent an event containing the total number of items in the list

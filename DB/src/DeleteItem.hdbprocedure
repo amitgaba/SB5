@@ -1,0 +1,11 @@
+PROCEDURE "MT_VIRTUAL_TABLES.DB::DeleteItem"(IN viewid integer, itemid integer)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+    AS
+BEGIN
+	declare lv_count integer;
+
+	delete from "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I" 
+		where "ID" = :viewid and 
+			  ITEM = :itemid;
+END

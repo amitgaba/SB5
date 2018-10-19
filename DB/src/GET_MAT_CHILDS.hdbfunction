@@ -1,0 +1,60 @@
+FUNCTION "MT_VIRTUAL_TABLES.DB::GET_MAT_CHILDS"( )
+	RETURNS TABLE
+	(
+	 "MATNR"	 NVARCHAR(18),
+	 "MENGE"	DECIMAL(13,3),
+	 STLTY		NVARCHAR(1),
+	 MATNR_LVL1 NVARCHAR(18),
+	 WERKS NVARCHAR(4),
+	 "_ID" NVARCHAR(37)
+	)
+       LANGUAGE SQLSCRIPT 
+       SQL SECURITY INVOKER AS 
+BEGIN 
+    /*****************************
+        Write your function logic
+    ****************************/
+
+lt_childs = 
+				SELECT
+					STPO."IDNRK" AS "MATNR",
+					MAST."MATNR" AS "MATNR_LVL1"
+				FROM 
+					"MT_VIRTUAL_TABLES.DB::STPO_ECC" as  STPO 
+					JOIN "MT_VIRTUAL_TABLES.DB::MAST_ECC" MAST ON MAST."STLNR" =  STPO."STLNR" 
+				WHERE 
+					--"STLST" != '99' AND 
+					MAST."WERKS" = 'CH46' 
+--					and 					stpo.idnrk = '000000000030403727' and mast.matnr = '000000000030415286'
+
+					and mast.matnr = '000000000030027401'
+				GROUP BY
+					STPO."IDNRK",
+					MAST."MATNR";
+
+
+return     					
+				SELECT
+					STPO."IDNRK" AS "MATNR",
+					SUM(STPO."MENGE") AS "MENGE",
+					STPO."STLTY",
+					MAST."MATNR" AS "MATNR_LVL1",
+					MAST."WERKS",
+					STPO."IDNRK" || '_' || MAST."MATNR" as "_ID"
+				FROM 
+					"MT_VIRTUAL_TABLES.DB::STPO_ECC" as  STPO 
+					JOIN "MT_VIRTUAL_TABLES.DB::MAST_ECC" MAST ON MAST."STLNR" =  STPO."STLNR" 
+				WHERE 
+					--"STLST" != '99' AND 
+					MAST."WERKS" = 'CH46' 
+--					and 					stpo.idnrk = '000000000030403727' and mast.matnr = '000000000030415286'
+
+					and ( mast.matnr = '000000000030027401' OR mast.matnr IN (select MATNR from :lt_childs) )
+				GROUP BY
+					STPO."IDNRK",
+
+					STPO."STLTY",
+					MAST."MATNR",
+					MAST."WERKS";
+					
+END;

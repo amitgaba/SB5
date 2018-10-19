@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:c="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table"
+	class="sapUiSizeCompact">
+	<Dialog title="Export Configuration" resizable="false" draggable="false" contentWidth="900px" contentHeight="550px">
+		<Panel width="auto" class="sapUiResponsiveMargin">
+			<content>
+				<VBox class="sapUiSmallMargin">
+					<f:SimpleForm title="Download View Details" columnsM="1" columnsL="1" emptySpanM="1" emptySpanL="1" labelSpanM="4" labelSpanL="4"
+						layout="ResponsiveGridLayout" editable="false" maxContainerCols="2" minWidth="1024" id="EditSimpleFormDisplay471">
+						<f:content>
+							<Label text="Functional Area" class="labelFragmentAlign"/>
+							<Input id="Editfunction" enabled="false"/>							
+							<Label text="View Name" class="labelFragmentAlign"/>
+							<Input id="Editviewname" enabled="false" valueHelpRequest="onViewValueHelpRequest"/>
+							<Label text="Schema Name" class="labelFragmentAlign"/>
+							<Input id="Editschemaname" enabled="false"/>							
+							<Label text="Scheduler" class="labelFragmentAlign"/>
+							<Input id="EditSchedule" enabled="true"/>							
+							<Label text="Filter" class="labelFragmentAlign"/>
+							<TextArea id="EditFilter" value=" "></TextArea>
+							<Label text="OutputColumns" class="labelFragmentAlign"/>
+							<TextArea id="EditOutCol" value=" "></TextArea>		
+							<Label text="Place Holder" class="labelFragmentAlign"/>
+							<TextArea id="EditPlHold" value=" "></TextArea>	
+							<Label text="Schedule ID" class="labelFragmentAlign"/>
+							<Input id="EditSCHID" enabled="true"/>		
+						</f:content>
+					</f:SimpleForm>
+				</VBox>
+			</content>
+		</Panel>
+		<beginButton>
+			<Button text="Save" press="onEditSave"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" press="onEditCancelDialog"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>
