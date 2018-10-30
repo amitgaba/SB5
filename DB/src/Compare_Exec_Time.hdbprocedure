@@ -176,9 +176,9 @@ select  'INSERT INTO OB5_TEMP_TAB SELECT count(*) as COUNT_REC FROM OB5_REC_TAB'
   select max(count_rec) into ob5_count_Rec  from OB5_temp_Tab;
   
   
-    select 'create table DB5_OB5_COMPARE as ( select * from  OB5_TEMP_TAB minus select * from DB5_TEMP_TAB ' || 
+    select 'create table DB5_OB5_COMPARE as ( select * from  OB5_REC_TAB minus select * from DB5_REC_TAB ' || 
     		'union all ' ||
-    		'select * from DB5_TEMP_TAB minus select * from OB5_TEMP_TAB )'
+    		'select * from DB5_REC_TAB minus select * from OB5_REC_TAB )'
     		into sqlquery from "MT_VIRTUAL_TABLES.DB::Dummy";
 	EXECUTE IMMEDIATE :SQLQUERY;	
 	
@@ -189,9 +189,9 @@ select  'INSERT INTO OB5_TEMP_TAB SELECT count(*) as COUNT_REC FROM OB5_REC_TAB'
 	
 	
   select max(count_rec) into db5_ob5_compare  from OB5_temp_Tab;
-  
-  insert into "MT_VIRTUAL_TABLES.DB::DataModel.EXEC_TIME_COMPARE" values(view_ID,item,current_timestamp,
-  :db5_exec_time,:db5_count_rec,:db5_ob5_compare,:ob5_exec_time,:ob5_count_rec,'');
+
+  insert into "MT_VIRTUAL_TABLES.DB::DataModel.EXEC_TIME_COMP" values(view_ID,item,current_timestamp,
+  :db5_exec_time,:db5_count_rec,:ob5_exec_time,:ob5_count_rec,:db5_ob5_compare,'DB5','OB5');
     
   drop table OB5_temp_Tab;
   drop table DB5_temp_Tab;

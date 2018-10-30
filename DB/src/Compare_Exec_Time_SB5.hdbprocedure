@@ -1,0 +1,207 @@
+PROCEDURE "MT_VIRTUAL_TABLES.DB::Compare_Exec_Time_SB5"( IN view_ID Integer, IN ITEM Integer, 
+ IN SRC NVARCHAR(50), IN TRG NVARCHAR(50) )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   AS
+BEGIN
+
+
+   /*************************************
+       Write your procedure logic 
+   *************************************/
+    /*************************************
+       Write your procedure logic 
+   *************************************/
+declare SQLQUERY varchar(8000);
+declare outcolsquery nvarchar(8000);
+declare view_name varchar(250);
+declare virtual_name varchar(250);
+declare filter varchar(500);
+declare outcol varchar(500);
+declare schema_name varchar(500);
+declare table_name varchar(100);
+declare table_name1 varchar(100);
+declare tfolder varchar(255);
+declare sfolder varchar(255);
+declare tfile varchar(255);
+declare ov_error_message string;
+declare access nvarchar(1);
+declare plhold varchar(1000);
+declare outsql varchar(5000);
+declare src_count_rec integer;
+declare trg_count_rec integer;
+declare src_trg_compare integer;
+declare src_exec_time Integer;
+declare trg_exec_time Integer;
+declare beforetime secondtime;
+declare aftertime secondtime;
+-- declare outsql varchar(5000);
+	
+DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+BEGIN
+-- Set status as E(Error) 
+-- ov_error_code := ::sql_error_code;				-- SQL Error Code
+ov_error_message := ::sql_error_message;		-- Error Message
+insert into "MT_VIRTUAL_TABLES.DB::DataModel.EXTRACT_ERROR" values(:view_id,:item,0,current_timestamp,::sql_error_code, ::Sql_error_message);
+
+
+END;   
+
+select max(a.VIRTUAL_NAME) into virtual_name 
+	from
+	"MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H" as a
+	where a.id = :view_id;
+
+
+select max(a.view_name) into view_name 
+	from
+	"MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H" as a
+	where a.id = :view_id;
+	
+select max(a.schema_name) into schema_name 
+	from
+	"MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H" as a
+	where a.id = :view_id ;
+	
+select max(a.filter) into filter from "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I" as a
+	where a.id = :view_id and
+		  a.item = :item;
+
+select max(a.outcols) into outcol from "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I" as a
+	where a.id = :view_id and
+		  a.item = :item;
+		  
+select max(a.plhold) into plhold from "MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_I" as a
+	where a.id = :view_id and
+		  a.item = :item;
+
+select trim(:outcol) into outcol from 	"MT_VIRTUAL_TABLES.DB::Dummy";
+
+select current_time into beforetime from "MT_VIRTUAL_TABLES.DB::Dummy";
+if SRC = 'SB5' then
+select '"' || :schema_name || '"."'|| :view_name || '"' into view_name from  "MT_VIRTUAL_TABLES.DB::Dummy";
+else
+select '"' || :src || '_' || :virtual_name || '"' into view_name from  "MT_VIRTUAL_TABLES.DB::Dummy";
+end if;
+
+
+ if ifnull(:filter,'') <> '' and ifnull(:filter,'') <> ' ' and ( ifnull(:plhold,'') = '' OR :plhold = ' ') then 
+ select  ' SELECT ' || outcol || ' FROM ' || :view_name || ' where ' || :filter
+ into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ elseif ifnull(:filter,'') <> '' and ifnull(:filter,' ') <> ' ' then
+ select ' SELECT ' || outcol || ' FROM ' || :view_name  || plhold || ' where ' || :filter
+ into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ elseif ifnull(:plhold,'') <> '' and ifnull(:plhold,'') <> ' ' then
+  select ' SELECT ' || outcol || ' FROM ' || :view_name  || plhold 
+ into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ else 
+   select ' SELECT ' || outcol || ' FROM ' || :view_name 
+ into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ end if;
+ 
+ select :SQLQUERY into outsql from "MT_VIRTUAL_TABLES.DB::Dummy";
+
+create  TABLE SRC_TEMP_TAB ( COUNT_REC Integer );
+select 'create column table SRC_REC_TAB as (' || :sqlquery || ');'
+into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+select :SQLQUERY into outsql from "MT_VIRTUAL_TABLES.DB::Dummy";
+ EXECUTE IMMEDIATE :SQLQUERY;
+
+select current_time into aftertime from "MT_VIRTUAL_TABLES.DB::Dummy";
+   
+select seconds_between(:beforetime,:aftertime) into src_exec_time from "MT_VIRTUAL_TABLES.DB::Dummy";
+
+select  'INSERT INTO SRC_TEMP_TAB SELECT count(*) as COUNT_REC FROM SRC_REC_TAB' 
+  into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+
+select :SQLQUERY into outsql from "MT_VIRTUAL_TABLES.DB::Dummy";
+ EXECUTE IMMEDIATE :SQLQUERY;
+ select :SQLQUERY into outsql from "MT_VIRTUAL_TABLES.DB::Dummy";
+  select max(count_rec) into src_count_Rec  from SRC_TEMP_TAB;
+  
+
+
+--- Target -------------------
+select max(a.view_name) into view_name 
+	from
+	"MT_VIRTUAL_TABLES.DB::DataModel.VIRTUAL_H" as a
+	where a.id = :view_id;
+
+if TRG = 'SB5' then
+select '"' || :schema_name || '"."'|| :view_name || '"' into view_name from  "MT_VIRTUAL_TABLES.DB::Dummy";
+else
+select '"' || :TRG || '_' || :virtual_name || '"' into view_name from  "MT_VIRTUAL_TABLES.DB::Dummy";
+end if;
+	
+select current_time into beforetime from "MT_VIRTUAL_TABLES.DB::Dummy";
+
+ if ifnull(:filter,'') <> '' and ifnull(:filter,'') <> ' ' and ( ifnull(:plhold,'') = '' OR :plhold = ' ') then 
+ select  ' SELECT ' || outcol || ' FROM ' || :view_name || ' where ' || :filter
+ into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ elseif ifnull(:filter,'') <> '' and ifnull(:filter,' ') <> ' ' then
+ select ' SELECT ' || outcol || ' FROM ' || :view_name  || plhold || ' where ' || :filter
+ into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ elseif ifnull(:plhold,'') <> '' and ifnull(:plhold,'') <> ' ' then
+  select ' SELECT ' || outcol || ' FROM ' || :view_name  || plhold 
+ into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ else 
+   select ' SELECT ' || outcol || ' FROM ' || :view_name 
+ into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ end if;
+ 
+
+ --EXECUTE IMMEDIATE :SQLQUERY;
+
+create  TABLE TRG_TEMP_TAB ( COUNT_REC Integer );
+
+select 'create column table TRG_REC_TAB as (' || :sqlquery || ');'
+into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ EXECUTE IMMEDIATE :SQLQUERY;
+
+select current_time into aftertime from "MT_VIRTUAL_TABLES.DB::Dummy";
+   
+select seconds_between(:beforetime,:aftertime) into trg_exec_time from "MT_VIRTUAL_TABLES.DB::Dummy";
+
+select  'INSERT INTO TRG_TEMP_TAB SELECT count(*) as COUNT_REC FROM TRG_REC_TAB' 
+  into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+
+ EXECUTE IMMEDIATE :SQLQUERY;
+ 
+  select max(count_rec) into trg_count_Rec  from trg_temp_Tab;
+  
+  
+    select 'create table SRC_TRG_COMPARE as ( select * from  TRG_REC_TAB minus select * from SRC_REC_TAB ' || 
+    		'union all ' ||
+    		'select * from SRC_REC_TAB minus select * from TRG_REC_TAB )'
+    		into sqlquery from "MT_VIRTUAL_TABLES.DB::Dummy";
+	EXECUTE IMMEDIATE :SQLQUERY;	
+	
+	delete from TRG_temp_Tab;
+	select 'insert into TRG_TEMP_TAB select count(*) as count_rec from SRC_TRG_COMPARE'
+	into sqlquery  from "MT_VIRTUAL_TABLES.DB::Dummy";
+	EXECUTE IMMEDIATE :SQLQUERY;
+	
+	
+  select max(count_rec) into src_trg_compare  from trg_temp_Tab;
+
+  insert into "MT_VIRTUAL_TABLES.DB::DataModel.EXEC_TIME_COMP" values(view_ID,item,current_timestamp,
+  :src_exec_time,:src_count_rec,:trg_exec_time,:trg_count_rec,:src,:trg,:src_trg_compare);
+    
+  drop table trg_temp_Tab;
+  drop table src_temp_Tab;
+  select 'DROP TABLE TRG_REC_TAB'
+into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ EXECUTE IMMEDIATE :SQLQUERY;
+ 
+  select 'DROP TABLE SRC_REC_TAB'
+into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ EXECUTE IMMEDIATE :SQLQUERY; 
+ 
+  select 'DROP TABLE SRC_TRG_COMPARE'
+into "SQLQUERY" from  "MT_VIRTUAL_TABLES.DB::Dummy";
+ EXECUTE IMMEDIATE :SQLQUERY; 
+ 
+
+
+END

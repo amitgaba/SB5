@@ -29,6 +29,20 @@ context DataModel {
     		error_code	   : Integer;
     		error_messsage : String(255);
 	};    
+
+     entity EXEC_TIME_COMP {
+    	key ID	 : Integer not null;
+    	key ITEM : Integer not null;
+    	key exec_time: UTCTimestamp not null;
+    		SRC_TOTAL_TIME_IN_SECS: Integer;
+    		SRC_RECORD_COUNT: Integer;
+    		TRG_TOTAL_TIME_IN_SECS: Integer;
+    		TRG_RECORD_COUNT: Integer;
+    		SRC_SYSTEM: String(50);
+    		TRG_SYSTEM: String(50);
+    		RECORD_DIFF: Integer;        		
+    		
+    };
 	
      entity EXEC_TIME_COMPARE {
     	key ID	 : Integer not null;
@@ -39,6 +53,6 @@ context DataModel {
     		DB5_FREE_TXT: String(3000);
     		OB5_TOTAL_TIME_IN_SECS: Integer;
     		OB5_RECORD_COUNT: Integer;
-    		OB5_FREE_TXT: String(3000);    		
+    		OB5_FREE_TXT: String(3000);    	
     };
 };

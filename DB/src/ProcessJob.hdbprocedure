@@ -1,4 +1,4 @@
-PROCEDURE "MT_VIRTUAL_TABLES.DB::ProcessJob"( IN schedule_id nvarchar(10) )
+PROCEDURE "MT_VIRTUAL_TABLES.DB::ProcessJob"( IN schedule_id nvarchar(10), IN SRC NVARCHAR(50), IN TRG NVARCHAR(50) )
    LANGUAGE SQLSCRIPT
    SQL SECURITY INVOKER
    --DEFAULT SCHEMA <default_schema_name>
@@ -72,6 +72,6 @@ BEGIN
 		
 		select max(item) into lv_item from :lt_process;
 		
-		call  "MT_VIRTUAL_TABLES.DB::Compare_Exec_Time"(:lv_id, :lv_item);
+		call  "MT_VIRTUAL_TABLES.DB::Compare_Exec_Time_SB5"(:lv_id, :lv_item, :src, :trg);
 	end while;  
 END
